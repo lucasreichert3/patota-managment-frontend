@@ -1,0 +1,31 @@
+.home-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  &.content-loading {
+    .members-list {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .recipe-info {
+      opacity: 0.5;
+    }
+  }
+
+  .loading {
+    position: absolute;
+    z-index: 999;
+  }
+}
+
+.members-list {
+  width: 50%;
+}
+
+.recipe-info {
+  width: 40%;
+}

@@ -1,0 +1,22 @@
+.members-list-header {
+  display: flex;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 0 1rem 1rem 1rem;
+
+  .name {
+    width: 35%;
+  }
+
+  .value {
+    width: 20%;
+  }
+
+  .paid {
+    width: 20%;
+  }
+}
+
+.content {
+  padding-top: 0.5rem;
+}

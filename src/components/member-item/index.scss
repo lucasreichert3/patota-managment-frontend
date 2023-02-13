@@ -1,0 +1,33 @@
+.member-item {
+  display: flex;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  align-items: center;
+
+  .name {
+    width: 35%;
+  }
+
+  .value {
+    width: 20%;
+  }
+
+  .paid {
+    width: 20%;
+  }
+
+  .button {
+    margin-left: auto;
+  }
+}
+
+.paid-icon-container {
+  font-size: 20px;
+
+  .paid-icon {
+    color: #56b14e;
+  }
+
+  .not-paid-icon {
+    color: #c83030;
+  }
+}
