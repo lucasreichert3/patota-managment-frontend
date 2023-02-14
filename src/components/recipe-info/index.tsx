@@ -3,6 +3,7 @@ import './index.scss';
 import Card from '../card';
 import FormatValue from '../format-value';
 import {Recipe} from '../../models/Recipe';
+import {month} from '../../utils/months';
 
 interface Props {
   recipe: Recipe;
@@ -12,10 +13,12 @@ function RecipeInfo({
   recipe: {payingMemebers, totalCost, totalMembers, valuePerMember, savedMoney, minimumValuePerMember},
 }: Props) {
   const getHeader = () => {
+    const currentMonth = new Date().getMonth();
+
     return (
       <div className='header-container'>
         <h1 className='main-title'>Recibo Mensal</h1>
-        <h2>Dezembro de 2022</h2>
+        <h2>{month[currentMonth]} de 2022</h2>
       </div>
     );
   };
