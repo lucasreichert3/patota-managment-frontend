@@ -3,6 +3,7 @@ import {Member} from '../models/Member';
 import {Patota} from '../models/Patota';
 import {getPatota, updateMemberPayment, updateSavedMoney} from '../services/patota-service';
 import {getCurrentMonthAndYear} from '../utils/getCurrentMonthYear';
+import { month } from '../utils/months';
 
 const PatotaContext = createContext<PatotaContext>({});
 
@@ -12,6 +13,7 @@ export const PatotaProvider = ({children}: PropsWithChildren) => {
   const [monthYear, setMonthYear] = useState<string>();
   const [minimumValuePerMember, setMinimumValuePerMember] = useState(0);
   const [payingMemebers, setpayingMemebers] = useState(0);
+  const [savedMoney, setSavedMoney] = useState<number>(0);
 
   const setMonthYearValue = () => {
     const {month, year} = getCurrentMonthAndYear();
@@ -23,6 +25,29 @@ export const PatotaProvider = ({children}: PropsWithChildren) => {
 
     return Number(total.toFixed(2));
   };
+
+  const updateSavedMoneyValue = async (newSavedMoney: number) => {
+    setLoading(true);
+    try{
+      const {month, year } = getCurrentMonthAndYear();
+      await updateSavedMoney(newSavedMoney.toString(), month.toString(), year);
+      setSavedMoney(newSavedMoney);
+      setPatota((prev) => {
+        if (!prev) return prev;
+        
+        return {
+          ...prev,
+          savedMoney: newSavedMoney,
+          totalCost: prev.totalCost ?? 0,
+          valuePerMember: prev.valuePerMember ?? 0,
+        };
+      });
+    } catch(error) {
+      console.log('Erro ao atualizar savedMonay', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const getPayingMembers = (members: Member[]) => {
     const payingMembers = members.filter(({paid}) => paid);
@@ -70,6 +95,20 @@ export const PatotaProvider = ({children}: PropsWithChildren) => {
   };
 
   useEffect(() => {
+    const fetchPatotaData = async () => {
+      setLoading(true);
+      try {
+        const { month, year } = getCurrentMonthAndYear();
+        const data = await getPatota(month.toString(), year.toString());
+        setPatota(data);
+        setSavedMoney(data.savedMoney);
+      } catch (error) {
+        console.error('Erro ao buscar dados da patota', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const getPatotaFromService = async () => {
       setLoading(true);
       const {month, year} = getCurrentMonthAndYear();
@@ -85,13 +124,14 @@ export const PatotaProvider = ({children}: PropsWithChildren) => {
       setLoading(false);
     };
 
+    fetchPatotaData();
     setMonthYearValue();
     getPatotaFromService();
   }, []);
 
   return (
     <PatotaContext.Provider
-      value={{patota, loading, monthYear, minimumValuePerMember, payingMemebers, updateMemberPaymentAndSavedMoney}}
+      value={{patota, loading, monthYear, minimumValuePerMember, payingMemebers, updateMemberPaymentAndSavedMoney, updateSavedMoneyValue}}
     >
       {children}
     </PatotaContext.Provider>
@@ -108,5 +148,7 @@ interface PatotaContext {
   minimumValuePerMember?: number;
   monthYear?: string;
   loading?: boolean;
+  savedMoney?: number;
   updateMemberPaymentAndSavedMoney?: (memberId: string) => Promise<void>;
+  updateSavedMoneyValue?: (newSavedMoney: number) => Promise<void>;
 }
