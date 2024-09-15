@@ -4,6 +4,7 @@ import Card from '../card';
 import FormatValue from '../format-value';
 import {Recipe} from '../../models/Recipe';
 import {month} from '../../utils/months';
+import SavedMoneyEditor from '../button/SavedMoneyEditor';
 
 interface Props {
   recipe: Recipe;
@@ -70,7 +71,7 @@ function RecipeInfo({
           <div className='card-row'>
             <span className='card-label'>Caixa total</span>
             <span className='card-value'>
-              <FormatValue value={savedMoney} />
+              <SavedMoneyEditor/>
             </span>
           </div>
         </div>
