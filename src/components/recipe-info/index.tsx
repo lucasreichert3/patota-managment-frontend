@@ -10,7 +10,7 @@ interface Props {
 }
 
 function RecipeInfo({
-  recipe: {payingMemebers, totalCost, totalMembers, valuePerMember, savedMoney, minimumValuePerMember},
+  recipe: {payingMemebers, totalCost, totalMembers, valuePerMember, minimumValuePerMember},
 }: Props) {
   const getHeader = () => {
     const currentMonth = new Date().getMonth();
@@ -71,16 +71,6 @@ function RecipeInfo({
           </span>
         </div>
 
-        {/* Caixa */}
-        <div className='border-t pt-4 mt-6'>
-          <h3 className='text-lg font-semibold mb-4'>Caixa</h3>
-          <div className='flex justify-between items-center'>
-            <span className='text-gray-600'>Caixa total</span>
-            <span className='font-semibold'>
-              <FormatValue value={savedMoney} />
-            </span>
-          </div>
-        </div>
       </div>
     </Card>
   );
